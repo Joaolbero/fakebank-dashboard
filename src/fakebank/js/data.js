@@ -30,3 +30,10 @@ const FAKE_TRANSACTIONS = [
     amount: 579.99,
   },
 ];
+
+const FAKE_SPENDING_CATEGORIES = [
+  { label: "Fixas", amount: 800 },
+  { label: "Mercado", amount: 450 },
+  { label: "Lazer", amount: 250 },
+  { label: "Online", amount: 160 }
+];

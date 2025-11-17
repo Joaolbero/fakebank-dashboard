@@ -337,3 +337,45 @@ body {
 .summary-line--net span:last-child {
   color: var(--accent);
 }
+
+.transactions-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.spending-graph {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  min-height: 64px;
+}
+
+.spending-bar {
+  width: 8px;
+  height: 64px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.spending-bar-fill {
+  width: 100%;
+  height: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #38bdf8, #0ea5e9);
+  transform-origin: bottom;
+}
+
+.spending-bar-label {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}

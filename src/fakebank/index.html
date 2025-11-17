@@ -1,42 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8" />
     <title>FakeBank Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
     <link rel="stylesheet" href="css/styles.css" />
 </head>
-
 <body>
     <div class="app">
-
         <section id="login-screen" class="screen screen--active">
             <div class="card card--login">
-                <h1 class="app-title">💳 FakeBank</h1>
+                <h1 class="app-title">FakeBank</h1>
                 <p class="app-subtitle">Seu banco fake, interface real.</p>
 
-                <form id="login-form">
+                <div class="auth-toggle">
+                    <button type="button" class="auth-toggle-btn auth-toggle-btn--active" data-auth-target="login">
+                        Entrar
+                    </button>
+                    <button type="button" class="auth-toggle-btn" data-auth-target="register">
+                        Criar conta
+                    </button>
+                </div>
+
+                <form id="login-form" class="auth-form auth-form--active">
                     <div class="form-group">
                         <label for="login-email">E-mail</label>
                         <input type="email" id="login-email" placeholder="seuemail@fake.com" required />
                     </div>
                     <div class="form-group">
                         <label for="login-password">Senha</label>
-                        <input type="password" id="login-password" placeholder="••••••••" required />
+                        <input type="password" id="login-password" placeholder="Senha" required />
                     </div>
                     <button type="submit" class="btn btn--primary">Entrar</button>
+                    <p class="hint-text">Modo demonstração. Se não houver contas registradas, o acesso é liberado.</p>
+                </form>
+
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-name">Nome completo</label>
+                        <input type="text" id="register-name" placeholder="Seu nome" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">E-mail</label>
+                        <input type="email" id="register-email" placeholder="seuemail@fake.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Senha</label>
+                        <input type="password" id="register-password" placeholder="Senha" required />
+                    </div>
+                    <button type="submit" class="btn btn--primary">Criar conta</button>
                 </form>
             </div>
         </section>
 
-
         <section id="dashboard-screen" class="screen">
             <header class="dashboard-header">
                 <div class="logo-area">
-                    <span class="logo-icon">💳</span>
+                    <span class="logo-icon">FB</span>
                     <span class="logo-text">FakeBank</span>
                 </div>
                 <div class="user-area">
@@ -65,15 +85,15 @@
                             Cartão virtual
                         </button>
                     </div>
-                    <div id="summary-month" class="summary-card">
-                        <!-- preenchido via JS -->
-                    </div>
+                    <div id="summary-month" class="summary-card"></div>
                     <p class="hint-text">Todos os botões são apenas demonstração (sem transações reais).</p>
                 </section>
 
-
                 <section class="card card--transactions">
-                    <h2>Últimos lançamentos</h2>
+                    <div class="transactions-header">
+                        <h2>Últimos lançamentos</h2>
+                        <div id="spending-graph" class="spending-graph"></div>
+                    </div>
                     <table class="transactions-table">
                         <thead>
                             <tr>
@@ -83,9 +103,7 @@
                                 <th>Valor</th>
                             </tr>
                         </thead>
-                        <tbody id="transactions-body">
-
-                        </tbody>
+                        <tbody id="transactions-body"></tbody>
                     </table>
                 </section>
             </main>
@@ -96,5 +114,4 @@
     <script src="js/ui.js"></script>
     <script src="js/main.js"></script>
 </body>
-
 </html>
