@@ -1,94 +1,96 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>FakeBank Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>FakeBank Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Fonte e estilo -->
-  <link rel="stylesheet" href="css/styles.css" />
+
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
-  <div class="app">
-    <!-- Tela de Login -->
-    <section id="login-screen" class="screen screen--active">
-      <div class="card card--login">
-        <h1 class="app-title">💳 FakeBank</h1>
-        <p class="app-subtitle">Seu banco fake, interface real.</p>
+    <div class="app">
 
-        <form id="login-form">
-          <div class="form-group">
-            <label for="login-email">E-mail</label>
-            <input type="email" id="login-email" placeholder="seuemail@fake.com" required />
-          </div>
-          <div class="form-group">
-            <label for="login-password">Senha</label>
-            <input type="password" id="login-password" placeholder="••••••••" required />
-          </div>
-          <button type="submit" class="btn btn--primary">Entrar</button>
-          <p class="hint-text">Login 100% fake, só para demonstração 😉</p>
-        </form>
-      </div>
-    </section>
+        <section id="login-screen" class="screen screen--active">
+            <div class="card card--login">
+                <h1 class="app-title">💳 FakeBank</h1>
+                <p class="app-subtitle">Seu banco fake, interface real.</p>
 
-    <!-- Tela de Dashboard -->
-    <section id="dashboard-screen" class="screen">
-      <header class="dashboard-header">
-        <div class="logo-area">
-          <span class="logo-icon">💳</span>
-          <span class="logo-text">FakeBank</span>
-        </div>
-        <div class="user-area">
-          <span id="user-name">Olá, Usuário</span>
-          <button id="logout-btn" class="btn btn--ghost">Sair</button>
-        </div>
-      </header>
-
-      <main class="dashboard-main">
-        <section class="card card--balance">
-          <h2>Saldo atual</h2>
-          <p id="current-balance" class="balance-amount">R$ 0,00</p>
-          <p class="balance-label">Conta Corrente • 0001-1</p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" placeholder="seuemail@fake.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required />
+                    </div>
+                    <button type="submit" class="btn btn--primary">Entrar</button>
+                    <p class="hint-text">Login 100% fake, só para demonstração 😉</p>
+                </form>
+            </div>
         </section>
 
-        <section class="card card--actions">
-          <h2>Ações rápidas</h2>
-          <div class="actions-grid">
-            <button class="btn btn--action" id="btn-transfer">
-              Transferir
-            </button>
-            <button class="btn btn--action" id="btn-pay">
-              Pagar conta
-            </button>
-            <button class="btn btn--action" id="btn-card">
-              Cartão virtual
-            </button>
-          </div>
-          <p class="hint-text">Todos os botões são apenas demonstração (sem transações reais).</p>
-        </section>
 
-        <section class="card card--transactions">
-          <h2>Últimos lançamentos</h2>
-          <table class="transactions-table">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Descrição</th>
-                <th>Tipo</th>
-                <th>Valor</th>
-              </tr>
-            </thead>
-            <tbody id="transactions-body">
-              <!-- Linhas geradas via JS -->
-            </tbody>
-          </table>
-        </section>
-      </main>
-    </section>
-  </div>
+        <section id="dashboard-screen" class="screen">
+            <header class="dashboard-header">
+                <div class="logo-area">
+                    <span class="logo-icon">💳</span>
+                    <span class="logo-text">FakeBank</span>
+                </div>
+                <div class="user-area">
+                    <span id="user-name">Olá, Usuário</span>
+                    <button id="logout-btn" class="btn btn--ghost">Sair</button>
+                </div>
+            </header>
 
-  <script src="js/data.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/main.js"></script>
+            <main class="dashboard-main">
+                <section class="card card--balance">
+                    <h2>Saldo atual</h2>
+                    <p id="current-balance" class="balance-amount">R$ 0,00</p>
+                    <p class="balance-label">Conta Corrente • 0001-1</p>
+                </section>
+
+                <section class="card card--actions">
+                    <h2>Ações rápidas</h2>
+                    <div class="actions-grid">
+                        <button class="btn btn--action" id="btn-transfer">
+                            Transferir
+                        </button>
+                        <button class="btn btn--action" id="btn-pay">
+                            Pagar conta
+                        </button>
+                        <button class="btn btn--action" id="btn-card">
+                            Cartão virtual
+                        </button>
+                    </div>
+                    <p class="hint-text">Todos os botões são apenas demonstração (sem transações reais).</p>
+                </section>
+
+                <section class="card card--transactions">
+                    <h2>Últimos lançamentos</h2>
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Tipo</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-body">
+
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </section>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>
