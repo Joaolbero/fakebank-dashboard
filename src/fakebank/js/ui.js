@@ -57,4 +57,52 @@ function renderDashboard() {
       tbody.appendChild(tr);
     });
   }
+
+  // 🔹 Aqui é o que faltava:
+  renderSummary();
+}
+
+function renderSummary() {
+  const summaryEl = document.getElementById("summary-month");
+  if (!summaryEl) return;
+
+  let totalIncome = 0;
+  let totalExpense = 0;
+
+  FAKE_TRANSACTIONS.forEach((tx) => {
+    if (tx.type === "credit") {
+      totalIncome += tx.amount;
+    } else if (tx.type === "debit") {
+      totalExpense += tx.amount;
+    }
+  });
+
+  const net = totalIncome - totalExpense;
+
+  summaryEl.innerHTML = `
+    <div class="summary-line summary-line--income">
+      <span>Entradas no período</span>
+      <span>${formatCurrencyBRL(totalIncome)}</span>
+    </div>
+    <div class="summary-line summary-line--expense">
+      <span>Saídas no período</span>
+      <span>${formatCurrencyBRL(totalExpense)}</span>
+    </div>
+    <div class="summary-line summary-line--net">
+      <span>Resultado</span>
+      <span>${formatCurrencyBRL(net)}</span>
+    </div>
+  `;
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.add("toast--visible");
+
+  setTimeout(() => {
+    toast.classList.remove("toast--visible");
+  }, 2500);
 }

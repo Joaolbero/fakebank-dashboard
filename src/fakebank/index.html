@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8" />
     <title>FakeBank Dashboard</title>
@@ -64,8 +65,12 @@
                             Cartão virtual
                         </button>
                     </div>
+                    <div id="summary-month" class="summary-card">
+                        <!-- preenchido via JS -->
+                    </div>
                     <p class="hint-text">Todos os botões são apenas demonstração (sem transações reais).</p>
                 </section>
+
 
                 <section class="card card--transactions">
                     <h2>Últimos lançamentos</h2>
@@ -86,7 +91,7 @@
             </main>
         </section>
     </div>
-
+    <div id="toast" class="toast"></div>
     <script src="js/data.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/main.js"></script>
