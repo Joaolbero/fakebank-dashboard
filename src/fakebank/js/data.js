@@ -1,5 +1,3 @@
-// src/fakebank/js/data.js
-
 const FAKE_USER = {
   name: "João Albero",
   balance: 3250.75,
