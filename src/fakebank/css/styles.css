@@ -52,7 +52,7 @@ body {
 
 .card {
   background: radial-gradient(circle at top left, rgba(6, 182, 212, 0.15), transparent 55%),
-              var(--bg-card);
+  var(--bg-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   padding: 24px;
@@ -251,8 +251,6 @@ body {
   color: var(--danger);
 }
 
-/* Toast */
-
 .toast {
   position: fixed;
   left: 50%;
@@ -301,14 +299,12 @@ body {
   }
 }
 
-/* Summary card */
-
 .summary-card {
   margin-top: 16px;
   padding: 12px 14px;
   border-radius: 12px;
   background: radial-gradient(circle at left, rgba(6, 182, 212, 0.16), transparent 60%),
-              rgba(15, 23, 42, 0.9);
+  rgba(15, 23, 42, 0.9);
   border: 1px solid var(--accent-soft);
   font-size: 0.85rem;
   display: flex;
@@ -378,4 +374,38 @@ body {
   font-size: 0.65rem;
   color: var(--text-muted);
   white-space: nowrap;
+}
+
+.auth-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.auth-toggle-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.auth-toggle-btn--active {
+  background: linear-gradient(90deg, #06b6d4, #3b82f6);
+  color: #f9fafb;
+  border-color: transparent;
+}
+
+.auth-form {
+  display: none;
+  margin-top: 8px;
+}
+
+.auth-form--active {
+  display: block;
 }

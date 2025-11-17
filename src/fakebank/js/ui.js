@@ -15,13 +15,26 @@ function formatCurrencyBRL(value) {
   });
 }
 
+function getCurrentUserName() {
+  try {
+    const stored = localStorage.getItem("fakebank_current_user");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed && parsed.name) {
+        return parsed.name;
+      }
+    }
+  } catch (e) {}
+  return FAKE_USER.name;
+}
+
 function renderDashboard() {
   const nameEl = document.getElementById("user-name");
   const balanceEl = document.getElementById("current-balance");
   const tbody = document.getElementById("transactions-body");
 
   if (nameEl) {
-    nameEl.textContent = "Olá, " + FAKE_USER.name;
+    nameEl.textContent = "Olá, " + getCurrentUserName();
   }
 
   if (balanceEl) {
