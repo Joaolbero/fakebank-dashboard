@@ -230,14 +230,13 @@ body.theme-light .btn--ghost:hover {
 }
 
 .card--profile {
-  grid-column: 1 / 2;
-  grid-row: 3 / 4;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 }
 
 .card--transactions {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
-  align-self: start;
 }
 
 .balance-amount {
@@ -748,4 +747,15 @@ body.theme-light .transactions-table tr:hover td {
   border-radius: 999px;
   background: #020617;
   box-shadow: -4px 0 0 0 #e5e7eb;
+}
+
+#login-screen.screen--active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.card--profile input {
+  margin-bottom: 14px;
 }
