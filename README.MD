@@ -1,99 +1,89 @@
-# FakeBank — Interface bancária fake, visual real  
-### FakeBank — A fake banking interface with a real modern look
+# 💳 FakeBank  
+### 🇧🇷 Seu banco fake, interface real  
+### 🇺🇸 Your fake bank, real interface  
 
 ---
 
 ## 🇧🇷 Sobre o projeto  
-**FakeBank** é uma simulação de aplicativo bancário moderno, responsivo e estiloso.  
-O objetivo é demonstrar habilidades em **HTML, CSS, JavaScript, UI/UX, persistência local e boas práticas de organização**.
+O **FakeBank** é um aplicativo bancário fake feito para demonstrar **UI/UX moderna**, **interatividade realista** e **JavaScript puro com persistência local**.  
+Ele simula um app de banco real, com:
 
-O app inclui:
-- Login e criação de conta (simulados, com armazenamento local)
-- Dashboard responsivo
-- Saldo dinâmico com valores persistentes
-- Lançamentos filtráveis (Todos, Créditos, Débitos)
-- Tema claro/escuro com ícones
-- Cartão virtual totalmente estilizado
-- Perfil da conta editável
-- Ações rápidas simuladas (transferir, pagar conta, gerar cartão)
+- 🔐 Login e criação de conta (com LocalStorage)  
+- 🏦 Dashboard completo  
+- 💰 Saldo dinâmico e persistente  
+- 🧾 Lançamentos filtráveis (Todos / Créditos / Débitos)  
+- 🎨 Tema claro/escuro com ícones  
+- 💳 Cartão virtual com número, validade e CVV  
+- ⚡ Ações rápidas simuladas  
+- 👤 Perfil da conta editável  
 
 ---
 
 ## 🇺🇸 About the project  
-**FakeBank** is a modern fake banking web app simulation, built to demonstrate skills in  
-**HTML, CSS, JavaScript, UI/UX, local persistence, and clean project structure**.
+**FakeBank** is a fake banking web app made to showcase **modern UI/UX**, **realistic interactions**, and **pure JavaScript with local persistence**.  
+It simulates a real banking experience, featuring:
 
-The app includes:
-- Login & account creation (simulated via localStorage)
-- Fully responsive dashboard
-- Dynamic balance with persistent values
-- Filterable transactions (All, Credits, Debits)
-- Light/Dark theme with icon toggle
-- Full-styled virtual card
-- Editable account profile
-- Quick simulated actions (transfer, pay, generate card)
-
----
-
-## 🇧🇷 Tecnologias usadas  
-- HTML5  
-- CSS3  
-- JavaScript (Vanilla)  
-- LocalStorage  
-- UI/UX design moderno  
-
-## 🇺🇸 Technologies used  
-- HTML5  
-- CSS3  
-- JavaScript (Vanilla)  
-- LocalStorage  
-- Modern UI/UX design  
+- 🔐 Login & account creation (LocalStorage)  
+- 🏦 Full dashboard  
+- 💰 Dynamic & persistent balance  
+- 🧾 Filterable transactions (All / Credits / Debits)  
+- 🎨 Light/Dark theme with icons  
+- 💳 Full virtual card generator  
+- ⚡ Simulated quick actions  
+- 👤 Editable account profile  
 
 ---
 
-## 🇧🇷 Estrutura do projeto  
+## 🛠 Tecnologias • Technologies  
+| 🇧🇷 PT-BR | 🇺🇸 EN |
+|---------|--------|
+| HTML5 | HTML5 |
+| CSS3 (UI moderna) | CSS3 (modern UI) |
+| JavaScript Vanilla | Vanilla JavaScript |
+| LocalStorage | LocalStorage |
+| Design responsivo | Responsive design |
+
+---
+
+## 📁 Estrutura do projeto • Project structure  
 ```
 src/
-  fakebank/
-    index.html
-    css/
-      styles.css
-    js/
-      data.js
-      ui.js
-      main.js
-tests/
-LICENSE
-README.md
-.gitignore
-```
 
-## 🇺🇸 Project structure  
-```
-src/
   fakebank/
+
     index.html
+
     css/
+
       styles.css
+
     js/
+
       data.js
+
       ui.js
+
       main.js
+
 tests/
+
 LICENSE
+
 README.md
+
 .gitignore
-```
 
 ---
 
-## 🇧🇷 Como executar  
+## ▶️ Como executar • How to run
+
+### 🇧🇷 PT-BR
 Basta abrir o arquivo:  
 ```
 src/fakebank/index.html
 ```
 
-## 🇺🇸 How to run  
+### 🇺🇸 EN  
 Just open:  
 ```
 src/fakebank/index.html
@@ -101,9 +91,24 @@ src/fakebank/index.html
 
 ---
 
-## 🇧🇷 Licença  
-Este projeto está licenciado sob a **MIT License**.
+## 🖼 Prints do projeto • Project screenshots  
+*(Adicione no GitHub depois – posso gerar as legendas se quiser)*
 
-## 🇺🇸 License  
-This project is licensed under the **MIT License**.
+---
 
+## 📜 Licença • License  
+Este projeto utiliza **MIT License**.  
+This project uses **MIT License**.
+
+---
+
+## 🧠 Notas importantes  
+- Este é um projeto de demonstração (não realiza operações reais).  
+- Todos os dados são armazenados no próprio navegador.  
+- Cada conta criada recebe um saldo inicial aleatório acima de **R$ 3.250,75**.  
+
+---
+
+## 👨‍💻 Autor • Author  
+**João Albero**  
+Github: https://github.com/Joaolbero  
