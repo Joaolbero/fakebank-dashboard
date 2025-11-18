@@ -1,108 +1,109 @@
-# 💳 FakeBank Dashboard
-
-**PT-BR** | Interface bancária falsa, experiência real.  
-**EN**   | Fake banking dashboard, real-world UI/UX.
+# FakeBank — Interface bancária fake, visual real  
+### FakeBank — A fake banking interface with a real modern look
 
 ---
 
-## 🇧🇷 Sobre o projeto
+## 🇧🇷 Sobre o projeto  
+**FakeBank** é uma simulação de aplicativo bancário moderno, responsivo e estiloso.  
+O objetivo é demonstrar habilidades em **HTML, CSS, JavaScript, UI/UX, persistência local e boas práticas de organização**.
 
-O **FakeBank Dashboard** é uma interface web responsiva que simula um aplicativo de banco digital.  
-Ele foi criado para demonstrar:
-
-- Layout de dashboard financeiro
-- UI/UX com tema dark + neon
-- Uso de HTML, CSS e JavaScript puro (sem backend)
-- Exibição de extratos e ações rápidas
-
-> Nenhuma transação é real – tudo é apenas visual e educacional.
-
----
-
-## 🇺🇸 About this project
-
-**FakeBank Dashboard** is a responsive web interface that simulates a digital banking app.  
-It was built to showcase:
-
-- Financial dashboard layout
-- Dark + neon UI/UX
-- Pure HTML, CSS and JavaScript (no backend)
-- Fake statements and quick actions
-
-> No real transactions – everything is visual and educational only.
+O app inclui:
+- Login e criação de conta (simulados, com armazenamento local)
+- Dashboard responsivo
+- Saldo dinâmico com valores persistentes
+- Lançamentos filtráveis (Todos, Créditos, Débitos)
+- Tema claro/escuro com ícones
+- Cartão virtual totalmente estilizado
+- Perfil da conta editável
+- Ações rápidas simuladas (transferir, pagar conta, gerar cartão)
 
 ---
 
-## 🛠️ Tecnologias / Tech Stack
+## 🇺🇸 About the project  
+**FakeBank** is a modern fake banking web app simulation, built to demonstrate skills in  
+**HTML, CSS, JavaScript, UI/UX, local persistence, and clean project structure**.
 
-- **HTML5**
-- **CSS3** (layout responsivo, tema dark/neon)
-- **JavaScript** (DOM, fake data rendering)
+The app includes:
+- Login & account creation (simulated via localStorage)
+- Fully responsive dashboard
+- Dynamic balance with persistent values
+- Filterable transactions (All, Credits, Debits)
+- Light/Dark theme with icon toggle
+- Full-styled virtual card
+- Editable account profile
+- Quick simulated actions (transfer, pay, generate card)
 
 ---
 
-## 🚀 Como rodar / How to run
+## 🇧🇷 Tecnologias usadas  
+- HTML5  
+- CSS3  
+- JavaScript (Vanilla)  
+- LocalStorage  
+- UI/UX design moderno  
 
-### 🇧🇷 Passos
+## 🇺🇸 Technologies used  
+- HTML5  
+- CSS3  
+- JavaScript (Vanilla)  
+- LocalStorage  
+- Modern UI/UX design  
 
-1. Clone este repositório:
+---
 
-   git clone https://github.com/Joaolbero/fakebank-dashboard.git
+## 🇧🇷 Estrutura do projeto  
+```
+src/
+  fakebank/
+    index.html
+    css/
+      styles.css
+    js/
+      data.js
+      ui.js
+      main.js
+tests/
+LICENSE
+README.md
+.gitignore
+```
 
-2. Entre na pasta do projeto:
+## 🇺🇸 Project structure  
+```
+src/
+  fakebank/
+    index.html
+    css/
+      styles.css
+    js/
+      data.js
+      ui.js
+      main.js
+tests/
+LICENSE
+README.md
+.gitignore
+```
 
-cd fakebank-dashboard/src/fakebank
+---
 
-3. Abra o arquivo index.html no navegador (clique duas vezes ou use uma extensão de live server).
+## 🇧🇷 Como executar  
+Basta abrir o arquivo:  
+```
+src/fakebank/index.html
+```
 
-### 🇺🇸 Steps
+## 🇺🇸 How to run  
+Just open:  
+```
+src/fakebank/index.html
+```
 
-1. Clone this repository:
+---
 
-git clone https://github.com/Joaolbero/fakebank-dashboard.git
+## 🇧🇷 Licença  
+Este projeto está licenciado sob a **MIT License**.
 
-2. Go to the project folder:
+## 🇺🇸 License  
+This project is licensed under the **MIT License**.
 
-cd fakebank-dashboard/src/fakebank
-
-3. Open index.html in your browser (double-click it or use a live server extension).
-
-📌 Funcionalidades / Features
-🇧🇷
-
-Tela de login fake
-
-Dashboard com:
-
-Saldo atual
-
-Ações rápidas (transferir, pagar, cartão virtual)
-
-Tabela de últimos lançamentos com dados fictícios
-
-🇺🇸
-
-Fake login screen
-
-Dashboard with:
-
-Current balance
-
-Quick actions (transfer, pay bill, virtual card)
-
-Recent transactions table with fake data
-
-🔒 Futuras melhorias / Future improvements
-
-🇧🇷 Sistema de login/registro (mesmo que fake, com LocalStorage ou backend simples)
-
-🇺🇸 Login/register system (even fake, with LocalStorage or a simple backend)
-
-🇧🇷 Animações extras e gráficos de gastos/mês
-
-🇺🇸 Extra animations and monthly spending charts
-
-📄 Licença / License
-
-Este projeto está licenciado sob a MIT License.
-This project is licensed under the MIT License.
