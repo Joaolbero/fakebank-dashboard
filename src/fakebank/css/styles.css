@@ -40,15 +40,18 @@ body {
 }
 
 body {
+  margin: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  min-height: 100vh;
+  padding: 24px 0;
 }
 
 .app {
   width: 100%;
-  max-width: 1180px;
-  padding: 24px;
+  max-width: 1040px;
+  padding: 16px;
 }
 
 .screen {
@@ -167,7 +170,12 @@ body.theme-light .btn--ghost:hover {
 
 .theme-toggle {
   font-size: 0.8rem;
-  padding-inline: 12px;
+  padding-inline: 10px;
+  min-width: 0;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dashboard-header {
@@ -175,6 +183,8 @@ body.theme-light .btn--ghost:hover {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  flex-wrap: wrap;
+  row-gap: 8px;
 }
 
 .logo-area {
@@ -198,6 +208,8 @@ body.theme-light .btn--ghost:hover {
   gap: 8px;
   font-size: 0.95rem;
   color: var(--text-muted);
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .dashboard-main {
@@ -320,7 +332,7 @@ body.theme-light .transactions-table tr:hover td {
   transform: translateX(-50%) translateY(0);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .dashboard-main {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto auto;
@@ -707,4 +719,32 @@ body.theme-light .transactions-table tr:hover td {
   100% {
     transform: translateX(120%);
   }
+}
+.theme-toggle-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  position: relative;
+}
+
+/* Sol (tema claro) */
+.theme-toggle-icon--sun {
+  background: radial-gradient(circle at 30% 30%, #facc15, #f97316);
+  box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.6);
+}
+
+/* Lua (tema escuro) */
+.theme-toggle-icon--moon {
+  background: #020617;
+  box-shadow: 0 0 0 1px var(--border-subtle);
+}
+
+.theme-toggle-icon--moon::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 999px;
+  background: #020617;
+  box-shadow: -4px 0 0 0 #e5e7eb;
 }

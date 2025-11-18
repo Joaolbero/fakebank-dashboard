@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8" />
     <title>FakeBank Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
     <div id="loading-overlay" class="loading-overlay">
         <div class="loading-card">
@@ -71,10 +73,13 @@
                 </div>
                 <div class="user-area">
                     <span id="user-name">Olá, Usuário</span>
-                    <button id="theme-toggle" class="btn btn--ghost theme-toggle">Tema escuro</button>
+                    <button id="theme-toggle" class="btn btn--ghost theme-toggle" aria-label="Alternar tema">
+                        <span id="theme-toggle-icon" class="theme-toggle-icon theme-toggle-icon--dark"></span>
+                    </button>
                     <button id="logout-btn" class="btn btn--ghost">Sair</button>
                 </div>
             </header>
+
 
             <main class="dashboard-main">
                 <section class="card card--balance">
@@ -127,7 +132,8 @@
                         <div class="transactions-header-main">
                             <h2>Últimos lançamentos</h2>
                             <div class="transactions-filters">
-                                <button type="button" class="transactions-filter-btn transactions-filter-btn--active" data-filter="all">
+                                <button type="button" class="transactions-filter-btn transactions-filter-btn--active"
+                                    data-filter="all">
                                     Todos
                                 </button>
                                 <button type="button" class="transactions-filter-btn" data-filter="credit">
@@ -202,7 +208,8 @@
                         </div>
                     </div>
                 </div>
-                <p class="hint-text">Cartão virtual gerado apenas para demonstração. Nenhuma operação real é realizada.</p>
+                <p class="hint-text">Cartão virtual gerado apenas para demonstração. Nenhuma operação real é realizada.
+                </p>
             </div>
         </div>
     </div>
@@ -212,4 +219,5 @@
     <script src="js/ui.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

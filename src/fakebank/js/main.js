@@ -213,9 +213,10 @@ function applyTheme(theme) {
   } else {
     body.classList.remove("theme-light");
   }
-  const btn = document.getElementById("theme-toggle");
-  if (btn) {
-    btn.textContent = theme === "light" ? "Tema claro" : "Tema escuro";
+  const icon = document.getElementById("theme-toggle-icon");
+  if (icon) {
+    icon.classList.remove("theme-toggle-icon--sun", "theme-toggle-icon--moon");
+    icon.classList.add(theme === "light" ? "theme-toggle-icon--sun" : "theme-toggle-icon--moon");
   }
 }
 
@@ -288,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  if (themeToggle) {
+    if (themeToggle) {
     themeToggle.addEventListener("click", () => {
       CURRENT_THEME = CURRENT_THEME === "light" ? "dark" : "light";
       setStoredTheme(CURRENT_THEME);
