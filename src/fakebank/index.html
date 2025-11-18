@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8" />
-    <title>FakeBank - Dashboard</title>
+    <title>FakeBank Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/styles.css" />
 </head>
-
 <body>
     <div class="app">
         <section id="login-screen" class="screen screen--active">
@@ -88,7 +86,7 @@
                         </button>
                     </div>
                     <div id="summary-month" class="summary-card"></div>
-                    <p class="hint-text">Todos os botões são apenas demonstração (sem transações reais).</p>
+                    <p class="hint-text">Todas as ações são simulações, sem movimentação real.</p>
                 </section>
 
                 <section class="card card--transactions">
@@ -111,10 +109,31 @@
             </main>
         </section>
     </div>
+
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title" class="modal-title">Operação</h3>
+                <button type="button" id="modal-close" class="modal-close">X</button>
+            </div>
+            <form id="modal-form" class="modal-form">
+                <div class="form-group">
+                    <label for="modal-amount">Valor</label>
+                    <input type="number" id="modal-amount" min="0" step="0.01" required />
+                </div>
+                <div class="form-group">
+                    <label for="modal-description">Descrição</label>
+                    <input type="text" id="modal-description" placeholder="Detalhe da operação" required />
+                </div>
+                <button type="submit" class="btn btn--primary" id="modal-submit">Confirmar</button>
+            </form>
+            <p class="hint-text" id="modal-hint"></p>
+        </div>
+    </div>
+
     <div id="toast" class="toast"></div>
     <script src="js/data.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/main.js"></script>
 </body>
-
 </html>
