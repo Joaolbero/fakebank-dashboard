@@ -1,3 +1,5 @@
+let CURRENT_FILTER = "all";
+
 function showScreen(screenId) {
   const screens = document.querySelectorAll(".screen");
   screens.forEach((s) => s.classList.remove("screen--active"));
@@ -16,16 +18,46 @@ function formatCurrencyBRL(value) {
 }
 
 function getCurrentUserName() {
-  try {
-    const stored = localStorage.getItem("fakebank_current_user");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (parsed && parsed.name) {
-        return parsed.name;
-      }
-    }
-  } catch (e) {}
+  const fn = typeof getCurrentUser === "function" ? getCurrentUser : null;
+  const user = fn ? fn() : null;
+  if (user && user.name) return user.name;
   return FAKE_USER.name;
+}
+
+function getCurrentUserEmail() {
+  const fn = typeof getCurrentUser === "function" ? getCurrentUser : null;
+  const user = fn ? fn() : null;
+  if (user && user.email) return user.email;
+  return "demo@fakebank.local";
+}
+
+function getFilteredTransactions() {
+  if (CURRENT_FILTER === "credit") {
+    return CURRENT_TRANSACTIONS.filter((tx) => tx.type === "credit");
+  }
+  if (CURRENT_FILTER === "debit") {
+    return CURRENT_TRANSACTIONS.filter((tx) => tx.type === "debit");
+  }
+  return CURRENT_TRANSACTIONS;
+}
+
+function renderProfile() {
+  const nameEl = document.getElementById("profile-name");
+  const emailEl = document.getElementById("profile-email");
+  const input = document.getElementById("profile-name-input");
+
+  const name = getCurrentUserName();
+  const email = getCurrentUserEmail();
+
+  if (nameEl) {
+    nameEl.textContent = name;
+  }
+  if (emailEl) {
+    emailEl.textContent = email;
+  }
+  if (input && !input.value) {
+    input.value = name;
+  }
 }
 
 function renderDashboard() {
@@ -44,7 +76,9 @@ function renderDashboard() {
   if (tbody) {
     tbody.innerHTML = "";
 
-    CURRENT_TRANSACTIONS.forEach((tx) => {
+    const list = getFilteredTransactions();
+
+    list.forEach((tx) => {
       const tr = document.createElement("tr");
 
       const tdDate = document.createElement("td");
@@ -73,6 +107,7 @@ function renderDashboard() {
 
   renderSummary();
   renderSpendingGraph();
+  renderProfile();
 }
 
 function renderSummary() {
@@ -133,6 +168,8 @@ function renderSpendingGraph() {
 
     bar.appendChild(fill);
     bar.appendChild(label);
+    bar.title = category.label + " • " + formatCurrencyBRL(category.amount);
+
     graphEl.appendChild(bar);
   });
 }
