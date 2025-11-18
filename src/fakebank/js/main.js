@@ -28,13 +28,20 @@ function clearCurrentUser() {
   } catch (e) {}
 }
 
-function hasCurrentUser() {
+function getCurrentUser() {
   try {
     const stored = localStorage.getItem("fakebank_current_user");
-    return !!stored;
+    if (!stored) return null;
+    const parsed = JSON.parse(stored);
+    if (parsed && parsed.email) return parsed;
+    return null;
   } catch (e) {
-    return false;
+    return null;
   }
+}
+
+function hasCurrentUser() {
+  return getCurrentUser() !== null;
 }
 
 let currentModalType = null;
@@ -45,6 +52,50 @@ function formatTodayDateBR() {
   } catch (e) {
     return "Hoje";
   }
+}
+
+function generateInitialBalance() {
+  const min = 3250.75;
+  const max = 15000;
+  const r = Math.random() * (max - min) + min;
+  return Math.round(r * 100) / 100;
+}
+
+function saveSessionState(name, email) {
+  try {
+    const state = {
+      name: name,
+      email: email,
+      balance: CURRENT_USER_BALANCE,
+      transactions: CURRENT_TRANSACTIONS
+    };
+    sessionStorage.setItem("fakebank_session_state", JSON.stringify(state));
+  } catch (e) {}
+}
+
+function restoreSessionStateIfAny() {
+  try {
+    const raw = sessionStorage.getItem("fakebank_session_state");
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed.balance !== "number" || !Array.isArray(parsed.transactions)) {
+      return;
+    }
+    CURRENT_USER_BALANCE = parsed.balance;
+    CURRENT_TRANSACTIONS = parsed.transactions;
+  } catch (e) {}
+}
+
+function clearSessionState() {
+  try {
+    sessionStorage.removeItem("fakebank_session_state");
+  } catch (e) {}
+}
+
+function startNewSessionForUser(name, email) {
+  CURRENT_USER_BALANCE = generateInitialBalance();
+  CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
+  saveSessionState(name, email);
 }
 
 function openModal(type) {
@@ -87,6 +138,8 @@ function closeModal() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  restoreSessionStateIfAny();
+
   const loginForm = document.getElementById("login-form");
   const registerForm = document.getElementById("register-form");
   const logoutBtn = document.getElementById("logout-btn");
@@ -137,9 +190,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const users = getStoredUsers();
 
       if (users.length === 0) {
-        setCurrentUser({ name: FAKE_USER.name, email: email || "demo@fakebank.local" });
-        CURRENT_USER_BALANCE = FAKE_USER.balance;
-        CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
+        const demoEmail = email || "demo@fakebank.local";
+        const demoUser = { name: FAKE_USER.name, email: demoEmail };
+        setCurrentUser(demoUser);
+        startNewSessionForUser(demoUser.name, demoUser.email);
         showScreen("dashboard-screen");
         renderDashboard();
         showToast("Login em modo demonstração");
@@ -156,8 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       setCurrentUser({ name: found.name, email: found.email });
-      CURRENT_USER_BALANCE = FAKE_USER.balance;
-      CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
+      startNewSessionForUser(found.name, found.email);
       showScreen("dashboard-screen");
       renderDashboard();
       showToast("Login realizado");
@@ -223,6 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       clearCurrentUser();
+      clearSessionState();
       CURRENT_USER_BALANCE = FAKE_USER.balance;
       CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
       showScreen("login-screen");
@@ -309,6 +363,13 @@ document.addEventListener("DOMContentLoaded", () => {
       CURRENT_USER_BALANCE = CURRENT_USER_BALANCE - amount;
       CURRENT_TRANSACTIONS.unshift(newTransaction);
 
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        saveSessionState(currentUser.name, currentUser.email);
+      } else {
+        saveSessionState(FAKE_USER.name, "demo@fakebank.local");
+      }
+
       renderDashboard();
 
       if (currentModalType === "transfer") {
@@ -325,8 +386,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (hasCurrentUser()) {
     showScreen("dashboard-screen");
-    CURRENT_USER_BALANCE = FAKE_USER.balance;
-    CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
     renderDashboard();
   } else {
     showScreen("login-screen");
