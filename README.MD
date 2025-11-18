@@ -22,7 +22,7 @@ Ele simula um app de banco real, com:
 - 💰 Saldo dinâmico e persistente  
 - 🧾 Lançamentos filtráveis (Todos / Créditos / Débitos)  
 - 🎨 Tema claro/escuro com ícones  
-- 💳 Cartão virtual com número, validade e CVV  
+- 💳 Cartão virtual com número, validade e CVV (ilustrativo) 
 - ⚡ Ações rápidas simuladas  
 - 👤 Perfil da conta editável  
 
