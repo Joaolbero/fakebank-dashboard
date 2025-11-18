@@ -38,13 +38,13 @@ function renderDashboard() {
   }
 
   if (balanceEl) {
-    balanceEl.textContent = formatCurrencyBRL(FAKE_USER.balance);
+    balanceEl.textContent = formatCurrencyBRL(CURRENT_USER_BALANCE);
   }
 
   if (tbody) {
     tbody.innerHTML = "";
 
-    FAKE_TRANSACTIONS.forEach((tx) => {
+    CURRENT_TRANSACTIONS.forEach((tx) => {
       const tr = document.createElement("tr");
 
       const tdDate = document.createElement("td");
@@ -82,7 +82,7 @@ function renderSummary() {
   let totalIncome = 0;
   let totalExpense = 0;
 
-  FAKE_TRANSACTIONS.forEach((tx) => {
+  CURRENT_TRANSACTIONS.forEach((tx) => {
     if (tx.type === "credit") {
       totalIncome += tx.amount;
     } else if (tx.type === "debit") {
