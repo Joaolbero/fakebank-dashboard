@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-card">
+            <div class="loading-logo">FB FakeBank</div>
+            <div id="loading-text" class="loading-text">Carregando sua conta...</div>
+            <div class="loading-bar">
+                <div class="loading-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="app">
         <section id="login-screen" class="screen screen--active">
             <div class="card card--login">
@@ -61,6 +71,7 @@
                 </div>
                 <div class="user-area">
                     <span id="user-name">Olá, Usuário</span>
+                    <button id="theme-toggle" class="btn btn--ghost theme-toggle">Tema escuro</button>
                     <button id="logout-btn" class="btn btn--ghost">Sair</button>
                 </div>
             </header>
@@ -89,9 +100,44 @@
                     <p class="hint-text">Todas as ações são simulações, sem movimentação real.</p>
                 </section>
 
+                <section class="card card--profile">
+                    <h2>Perfil da conta</h2>
+                    <div class="profile-content">
+                        <div>
+                            <div class="profile-line-label">Titular</div>
+                            <div class="profile-line-value" id="profile-name"></div>
+                        </div>
+                        <div>
+                            <div class="profile-line-label">E-mail</div>
+                            <div class="profile-line-value" id="profile-email"></div>
+                        </div>
+                        <div>
+                            <div class="profile-line-label">Tipo de conta</div>
+                            <div class="profile-line-value">Conta corrente digital</div>
+                        </div>
+                    </div>
+                    <form class="profile-edit" id="profile-form">
+                        <input type="text" id="profile-name-input" placeholder="Atualizar nome de exibição" />
+                        <button type="submit" class="btn btn--primary">Salvar</button>
+                    </form>
+                </section>
+
                 <section class="card card--transactions">
                     <div class="transactions-header">
-                        <h2>Últimos lançamentos</h2>
+                        <div class="transactions-header-main">
+                            <h2>Últimos lançamentos</h2>
+                            <div class="transactions-filters">
+                                <button type="button" class="transactions-filter-btn transactions-filter-btn--active" data-filter="all">
+                                    Todos
+                                </button>
+                                <button type="button" class="transactions-filter-btn" data-filter="credit">
+                                    Créditos
+                                </button>
+                                <button type="button" class="transactions-filter-btn" data-filter="debit">
+                                    Débitos
+                                </button>
+                            </div>
+                        </div>
                         <div id="spending-graph" class="spending-graph"></div>
                     </div>
                     <table class="transactions-table">
@@ -128,6 +174,36 @@
                 <button type="submit" class="btn btn--primary" id="modal-submit">Confirmar</button>
             </form>
             <p class="hint-text" id="modal-hint"></p>
+        </div>
+    </div>
+
+    <div id="card-overlay" class="modal-overlay">
+        <div class="modal card-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Cartão virtual</h3>
+                <button type="button" id="card-close" class="modal-close">X</button>
+            </div>
+            <div class="card-virtual-body">
+                <div class="virtual-card">
+                    <div class="virtual-card-brand">FakeBank</div>
+                    <div class="virtual-card-number" id="card-number"></div>
+                    <div class="virtual-card-row">
+                        <div class="virtual-card-label">Titular</div>
+                        <div class="virtual-card-value" id="card-holder"></div>
+                    </div>
+                    <div class="virtual-card-row virtual-card-row-inline">
+                        <div>
+                            <div class="virtual-card-label">Validade</div>
+                            <div class="virtual-card-value" id="card-expiry"></div>
+                        </div>
+                        <div>
+                            <div class="virtual-card-label">CVV</div>
+                            <div class="virtual-card-value" id="card-cvv"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="hint-text">Cartão virtual gerado apenas para demonstração. Nenhuma operação real é realizada.</p>
+            </div>
         </div>
     </div>
 
