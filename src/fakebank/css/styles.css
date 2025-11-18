@@ -409,3 +409,69 @@ body {
 .auth-form--active {
   display: block;
 }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+  z-index: 900;
+}
+
+.modal-overlay--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  background: #020617;
+  border-radius: var(--radius-lg);
+  padding: 20px 20px 16px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--border-subtle);
+  animation: fade-in 0.25s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.modal-title {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.modal-close {
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.modal-close:hover {
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text-main);
+  border-color: var(--accent-soft);
+}
+
+.modal-form {
+  margin-top: 4px;
+}
