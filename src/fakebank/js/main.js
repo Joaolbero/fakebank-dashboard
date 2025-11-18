@@ -45,6 +45,7 @@ function hasCurrentUser() {
 }
 
 let currentModalType = null;
+let CURRENT_THEME = "dark";
 
 function formatTodayDateBR() {
   try {
@@ -137,8 +138,107 @@ function closeModal() {
   currentModalType = null;
 }
 
+function generateCardNumber() {
+  const groups = [];
+  for (let i = 0; i < 4; i += 1) {
+    const n = Math.floor(Math.random() * 10000);
+    const s = ("0000" + n).slice(-4);
+    groups.push(s);
+  }
+  return groups.join(" ");
+}
+
+function generateExpiry() {
+  const now = new Date();
+  const year = now.getFullYear() + 3;
+  const month = now.getMonth() + 1;
+  const mm = ("0" + month).slice(-2);
+  return mm + "/" + String(year).slice(-2);
+}
+
+function generateCVV() {
+  const n = Math.floor(Math.random() * 900) + 100;
+  return String(n);
+}
+
+function openCardModal() {
+  const overlay = document.getElementById("card-overlay");
+  const numberEl = document.getElementById("card-number");
+  const nameEl = document.getElementById("card-holder");
+  const expiryEl = document.getElementById("card-expiry");
+  const cvvEl = document.getElementById("card-cvv");
+
+  if (!overlay || !numberEl || !nameEl || !expiryEl || !cvvEl) return;
+
+  const user = getCurrentUser();
+  const holderName = user && user.name ? user.name : FAKE_USER.name;
+
+  const cardNumber = generateCardNumber();
+  const expiry = generateExpiry();
+  const cvv = generateCVV();
+
+  numberEl.textContent = cardNumber;
+  nameEl.textContent = holderName.toUpperCase();
+  expiryEl.textContent = expiry;
+  cvvEl.textContent = cvv;
+
+  overlay.classList.add("modal-overlay--visible");
+}
+
+function closeCardModal() {
+  const overlay = document.getElementById("card-overlay");
+  if (overlay) {
+    overlay.classList.remove("modal-overlay--visible");
+  }
+}
+
+function getStoredTheme() {
+  try {
+    const t = localStorage.getItem("fakebank_theme");
+    if (t === "light" || t === "dark") return t;
+  } catch (e) {}
+  return "dark";
+}
+
+function setStoredTheme(theme) {
+  try {
+    localStorage.setItem("fakebank_theme", theme);
+  } catch (e) {}
+}
+
+function applyTheme(theme) {
+  const body = document.body;
+  if (theme === "light") {
+    body.classList.add("theme-light");
+  } else {
+    body.classList.remove("theme-light");
+  }
+  const btn = document.getElementById("theme-toggle");
+  if (btn) {
+    btn.textContent = theme === "light" ? "Tema claro" : "Tema escuro";
+  }
+}
+
+function showLoadingOverlay(message) {
+  const overlay = document.getElementById("loading-overlay");
+  const textEl = document.getElementById("loading-text");
+  if (!overlay) return;
+  if (textEl && message) {
+    textEl.textContent = message;
+  }
+  overlay.classList.add("loading-overlay--visible");
+}
+
+function hideLoadingOverlay() {
+  const overlay = document.getElementById("loading-overlay");
+  if (!overlay) return;
+  overlay.classList.remove("loading-overlay--visible");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   restoreSessionStateIfAny();
+  CURRENT_THEME = getStoredTheme();
+  applyTheme(CURRENT_THEME);
 
   const loginForm = document.getElementById("login-form");
   const registerForm = document.getElementById("register-form");
@@ -156,6 +256,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalForm = document.getElementById("modal-form");
   const modalAmountInput = document.getElementById("modal-amount");
   const modalDescInput = document.getElementById("modal-description");
+
+  const cardOverlay = document.getElementById("card-overlay");
+  const cardClose = document.getElementById("card-close");
+
+  const themeToggle = document.getElementById("theme-toggle");
+
+  const profileForm = document.getElementById("profile-form");
+  const profileNameInput = document.getElementById("profile-name-input");
+
+  const filterButtons = document.querySelectorAll(".transactions-filter-btn");
 
   toggleButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -178,6 +288,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      CURRENT_THEME = CURRENT_THEME === "light" ? "dark" : "light";
+      setStoredTheme(CURRENT_THEME);
+      applyTheme(CURRENT_THEME);
+    });
+  }
+
   if (loginForm) {
     loginForm.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -194,9 +312,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const demoUser = { name: FAKE_USER.name, email: demoEmail };
         setCurrentUser(demoUser);
         startNewSessionForUser(demoUser.name, demoUser.email);
-        showScreen("dashboard-screen");
-        renderDashboard();
-        showToast("Login em modo demonstração");
+        showLoadingOverlay("Carregando sua conta de demonstração...");
+        setTimeout(() => {
+          hideLoadingOverlay();
+          showScreen("dashboard-screen");
+          renderDashboard();
+          showToast("Login em modo demonstração");
+        }, 700);
         return;
       }
 
@@ -211,9 +333,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setCurrentUser({ name: found.name, email: found.email });
       startNewSessionForUser(found.name, found.email);
-      showScreen("dashboard-screen");
-      renderDashboard();
-      showToast("Login realizado");
+      showLoadingOverlay("Carregando sua conta...");
+      setTimeout(() => {
+        hideLoadingOverlay();
+        showScreen("dashboard-screen");
+        renderDashboard();
+        showToast("Login realizado");
+      }, 700);
     });
   }
 
@@ -298,7 +424,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (btnCard) {
     btnCard.addEventListener("click", () => {
-      showToast("Cartão virtual simulado neste ambiente");
+      openCardModal();
     });
   }
 
@@ -312,6 +438,20 @@ document.addEventListener("DOMContentLoaded", () => {
     modalOverlay.addEventListener("click", (event) => {
       if (event.target === modalOverlay) {
         closeModal();
+      }
+    });
+  }
+
+  if (cardClose) {
+    cardClose.addEventListener("click", () => {
+      closeCardModal();
+    });
+  }
+
+  if (cardOverlay) {
+    cardOverlay.addEventListener("click", (event) => {
+      if (event.target === cardOverlay) {
+        closeCardModal();
       }
     });
   }
@@ -363,9 +503,9 @@ document.addEventListener("DOMContentLoaded", () => {
       CURRENT_USER_BALANCE = CURRENT_USER_BALANCE - amount;
       CURRENT_TRANSACTIONS.unshift(newTransaction);
 
-      const currentUser = getCurrentUser();
-      if (currentUser) {
-        saveSessionState(currentUser.name, currentUser.email);
+      const user = getCurrentUser();
+      if (user) {
+        saveSessionState(user.name, user.email);
       } else {
         saveSessionState(FAKE_USER.name, "demo@fakebank.local");
       }
@@ -384,9 +524,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  if (profileForm) {
+    profileForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!profileNameInput) return;
+
+      const newName = profileNameInput.value.trim();
+      if (!newName) {
+        showToast("Informe um nome válido");
+        return;
+      }
+
+      const user = getCurrentUser();
+      if (user) {
+        user.name = newName;
+        setCurrentUser(user);
+
+        const users = getStoredUsers();
+        const index = users.findIndex(
+          (u) => u.email.toLowerCase() === user.email.toLowerCase()
+        );
+        if (index !== -1) {
+          users[index].name = newName;
+          setStoredUsers(users);
+        }
+
+        saveSessionState(user.name, user.email);
+      }
+
+      renderDashboard();
+      showToast("Nome de exibição atualizado");
+    });
+  }
+
+  if (filterButtons.length > 0) {
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const value = btn.getAttribute("data-filter") || "all";
+        CURRENT_FILTER = value;
+        filterButtons.forEach((b) =>
+          b.classList.remove("transactions-filter-btn--active")
+        );
+        btn.classList.add("transactions-filter-btn--active");
+        renderDashboard();
+      });
+    });
+  }
+
   if (hasCurrentUser()) {
-    showScreen("dashboard-screen");
-    renderDashboard();
+    showLoadingOverlay("Reconectando à sua conta...");
+    setTimeout(() => {
+      hideLoadingOverlay();
+      showScreen("dashboard-screen");
+      renderDashboard();
+    }, 600);
   } else {
     showScreen("login-screen");
   }
