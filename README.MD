@@ -2,6 +2,15 @@
 ### 🇧🇷 Seu banco fake, interface real  
 ### 🇺🇸 Your fake bank, real interface  
 
+<p align="left">
+  <img src="https://img.shields.io/badge/Status-Online-brightgreen?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Project%20Type-Front--End-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Tech-JavaScript-yellow?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Version-1.0.0-blueviolet?style=for-the-badge" />
+  <img src="https://img.shields.io/github/last-commit/Joaolbero/fakebank?style=for-the-badge" />
+</p>
+
 ---
 
 ## 🇧🇷 Sobre o projeto  
