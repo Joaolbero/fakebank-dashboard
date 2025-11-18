@@ -1,150 +1,334 @@
-function showScreen(screenId) {
-  const screens = document.querySelectorAll(".screen");
-  screens.forEach((s) => s.classList.remove("screen--active"));
-
-  const target = document.getElementById(screenId);
-  if (target) {
-    target.classList.add("screen--active");
+function getStoredUsers() {
+  try {
+    const data = localStorage.getItem("fakebank_users");
+    if (!data) return [];
+    const parsed = JSON.parse(data);
+    if (Array.isArray(parsed)) return parsed;
+    return [];
+  } catch (e) {
+    return [];
   }
 }
 
-function formatCurrencyBRL(value) {
-  return value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  });
+function setStoredUsers(users) {
+  try {
+    localStorage.setItem("fakebank_users", JSON.stringify(users));
+  } catch (e) {}
 }
 
-function getCurrentUserName() {
+function setCurrentUser(user) {
+  try {
+    localStorage.setItem("fakebank_current_user", JSON.stringify(user));
+  } catch (e) {}
+}
+
+function clearCurrentUser() {
+  try {
+    localStorage.removeItem("fakebank_current_user");
+  } catch (e) {}
+}
+
+function hasCurrentUser() {
   try {
     const stored = localStorage.getItem("fakebank_current_user");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (parsed && parsed.name) {
-        return parsed.name;
-      }
-    }
-  } catch (e) {}
-  return FAKE_USER.name;
+    return !!stored;
+  } catch (e) {
+    return false;
+  }
 }
 
-function renderDashboard() {
-  const nameEl = document.getElementById("user-name");
-  const balanceEl = document.getElementById("current-balance");
-  const tbody = document.getElementById("transactions-body");
+let currentModalType = null;
 
-  if (nameEl) {
-    nameEl.textContent = "Olá, " + getCurrentUserName();
+function formatTodayDateBR() {
+  try {
+    return new Date().toLocaleDateString("pt-BR");
+  } catch (e) {
+    return "Hoje";
+  }
+}
+
+function openModal(type) {
+  currentModalType = type;
+
+  const overlay = document.getElementById("modal-overlay");
+  const titleEl = document.getElementById("modal-title");
+  const hintEl = document.getElementById("modal-hint");
+  const descInput = document.getElementById("modal-description");
+  const amountInput = document.getElementById("modal-amount");
+
+  if (!overlay || !titleEl || !hintEl || !descInput || !amountInput) return;
+
+  amountInput.value = "";
+  descInput.value = "";
+
+  if (type === "transfer") {
+    titleEl.textContent = "Nova transferência";
+    hintEl.textContent = "Esta operação é apenas simulação. O saldo será atualizado apenas na interface.";
+    descInput.placeholder = "Nome ou chave do destinatário";
+  } else if (type === "pay") {
+    titleEl.textContent = "Pagamento de conta";
+    hintEl.textContent = "Simulação de pagamento de conta. O valor será descontado do saldo exibido.";
+    descInput.placeholder = "Descrição da conta";
+  } else {
+    titleEl.textContent = "Operação";
+    hintEl.textContent = "";
+    descInput.placeholder = "Descrição";
   }
 
-  if (balanceEl) {
-    balanceEl.textContent = formatCurrencyBRL(CURRENT_USER_BALANCE);
+  overlay.classList.add("modal-overlay--visible");
+}
+
+function closeModal() {
+  const overlay = document.getElementById("modal-overlay");
+  if (overlay) {
+    overlay.classList.remove("modal-overlay--visible");
   }
+  currentModalType = null;
+}
 
-  if (tbody) {
-    tbody.innerHTML = "";
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById("login-form");
+  const registerForm = document.getElementById("register-form");
+  const logoutBtn = document.getElementById("logout-btn");
 
-    CURRENT_TRANSACTIONS.forEach((tx) => {
-      const tr = document.createElement("tr");
+  const btnTransfer = document.getElementById("btn-transfer");
+  const btnPay = document.getElementById("btn-pay");
+  const btnCard = document.getElementById("btn-card");
 
-      const tdDate = document.createElement("td");
-      tdDate.textContent = tx.date;
+  const toggleButtons = document.querySelectorAll(".auth-toggle-btn");
+  const forms = document.querySelectorAll(".auth-form");
 
-      const tdDesc = document.createElement("td");
-      tdDesc.textContent = tx.description;
+  const modalOverlay = document.getElementById("modal-overlay");
+  const modalClose = document.getElementById("modal-close");
+  const modalForm = document.getElementById("modal-form");
+  const modalAmountInput = document.getElementById("modal-amount");
+  const modalDescInput = document.getElementById("modal-description");
 
-      const tdType = document.createElement("td");
-      tdType.textContent = tx.type === "credit" ? "Crédito" : "Débito";
+  toggleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = button.getAttribute("data-auth-target");
 
-      const tdAmount = document.createElement("td");
-      tdAmount.textContent = formatCurrencyBRL(tx.amount);
-      tdAmount.classList.add(
-        tx.type === "credit" ? "transaction--credit" : "transaction--debit"
+      toggleButtons.forEach((b) => b.classList.remove("auth-toggle-btn--active"));
+      button.classList.add("auth-toggle-btn--active");
+
+      forms.forEach((form) => {
+        form.classList.remove("auth-form--active");
+      });
+
+      if (target === "login") {
+        const f = document.getElementById("login-form");
+        if (f) f.classList.add("auth-form--active");
+      } else if (target === "register") {
+        const f = document.getElementById("register-form");
+        if (f) f.classList.add("auth-form--active");
+      }
+    });
+  });
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const emailInput = document.getElementById("login-email");
+      const passwordInput = document.getElementById("login-password");
+      const email = emailInput ? emailInput.value.trim() : "";
+      const password = passwordInput ? passwordInput.value : "";
+
+      const users = getStoredUsers();
+
+      if (users.length === 0) {
+        setCurrentUser({ name: FAKE_USER.name, email: email || "demo@fakebank.local" });
+        CURRENT_USER_BALANCE = FAKE_USER.balance;
+        CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
+        showScreen("dashboard-screen");
+        renderDashboard();
+        showToast("Login em modo demonstração");
+        return;
+      }
+
+      const found = users.find(
+        (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
       );
 
-      tr.appendChild(tdDate);
-      tr.appendChild(tdDesc);
-      tr.appendChild(tdType);
-      tr.appendChild(tdAmount);
+      if (!found) {
+        showToast("E-mail ou senha inválidos");
+        return;
+      }
 
-      tbody.appendChild(tr);
+      setCurrentUser({ name: found.name, email: found.email });
+      CURRENT_USER_BALANCE = FAKE_USER.balance;
+      CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
+      showScreen("dashboard-screen");
+      renderDashboard();
+      showToast("Login realizado");
     });
   }
 
-  renderSummary();
-  renderSpendingGraph();
-}
+  if (registerForm) {
+    registerForm.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-function renderSummary() {
-  const summaryEl = document.getElementById("summary-month");
-  if (!summaryEl) return;
+      const nameInput = document.getElementById("register-name");
+      const emailInput = document.getElementById("register-email");
+      const passwordInput = document.getElementById("register-password");
 
-  let totalIncome = 0;
-  let totalExpense = 0;
+      const name = nameInput ? nameInput.value.trim() : "";
+      const email = emailInput ? emailInput.value.trim() : "";
+      const password = passwordInput ? passwordInput.value : "";
 
-  CURRENT_TRANSACTIONS.forEach((tx) => {
-    if (tx.type === "credit") {
-      totalIncome += tx.amount;
-    } else if (tx.type === "debit") {
-      totalExpense += tx.amount;
-    }
-  });
+      if (!name || !email || !password) {
+        showToast("Preencha todos os campos");
+        return;
+      }
 
-  const net = totalIncome - totalExpense;
+      const users = getStoredUsers();
+      const exists = users.some((u) => u.email.toLowerCase() === email.toLowerCase());
 
-  summaryEl.innerHTML = `
-    <div class="summary-line summary-line--income">
-      <span>Entradas no período</span>
-      <span>${formatCurrencyBRL(totalIncome)}</span>
-    </div>
-    <div class="summary-line summary-line--expense">
-      <span>Saídas no período</span>
-      <span>${formatCurrencyBRL(totalExpense)}</span>
-    </div>
-    <div class="summary-line summary-line--net">
-      <span>Resultado</span>
-      <span>${formatCurrencyBRL(net)}</span>
-    </div>
-  `;
-}
+      if (exists) {
+        showToast("Já existe uma conta com este e-mail");
+        return;
+      }
 
-function renderSpendingGraph() {
-  const graphEl = document.getElementById("spending-graph");
-  if (!graphEl || !Array.isArray(FAKE_SPENDING_CATEGORIES)) return;
+      const newUser = { name, email, password };
+      users.push(newUser);
+      setStoredUsers(users);
 
-  graphEl.innerHTML = "";
+      if (emailInput) emailInput.value = "";
+      if (passwordInput) passwordInput.value = "";
+      if (nameInput) nameInput.value = "";
 
-  const maxAmount = Math.max(
-    ...FAKE_SPENDING_CATEGORIES.map((c) => c.amount)
-  ) || 1;
+      const toggleLogin = document.querySelector('[data-auth-target="login"]');
+      const toggleRegister = document.querySelector('[data-auth-target="register"]');
+      if (toggleLogin && toggleRegister) {
+        toggleRegister.classList.remove("auth-toggle-btn--active");
+        toggleLogin.classList.add("auth-toggle-btn--active");
+      }
 
-  FAKE_SPENDING_CATEGORIES.forEach((category) => {
-    const bar = document.createElement("div");
-    bar.classList.add("spending-bar");
+      const loginFormEl = document.getElementById("login-form");
+      const registerFormEl = document.getElementById("register-form");
+      if (loginFormEl && registerFormEl) {
+        registerFormEl.classList.remove("auth-form--active");
+        loginFormEl.classList.add("auth-form--active");
+      }
 
-    const fill = document.createElement("div");
-    fill.classList.add("spending-bar-fill");
-    const heightPercent = (category.amount / maxAmount) * 100;
-    fill.style.height = heightPercent + "%";
+      const loginEmailInput = document.getElementById("login-email");
+      if (loginEmailInput) {
+        loginEmailInput.value = email;
+      }
 
-    const label = document.createElement("div");
-    label.classList.add("spending-bar-label");
-    label.textContent = category.label;
+      showToast("Conta criada com sucesso");
+    });
+  }
 
-    bar.appendChild(fill);
-    bar.appendChild(label);
-    graphEl.appendChild(bar);
-  });
-}
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      clearCurrentUser();
+      CURRENT_USER_BALANCE = FAKE_USER.balance;
+      CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
+      showScreen("login-screen");
+      showToast("Sessão encerrada");
+    });
+  }
 
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  if (!toast) return;
+  if (btnTransfer) {
+    btnTransfer.addEventListener("click", () => {
+      openModal("transfer");
+    });
+  }
 
-  toast.textContent = message;
-  toast.classList.add("toast--visible");
+  if (btnPay) {
+    btnPay.addEventListener("click", () => {
+      openModal("pay");
+    });
+  }
 
-  setTimeout(() => {
-    toast.classList.remove("toast--visible");
-  }, 2500);
-}
+  if (btnCard) {
+    btnCard.addEventListener("click", () => {
+      showToast("Cartão virtual simulado neste ambiente");
+    });
+  }
+
+  if (modalClose) {
+    modalClose.addEventListener("click", () => {
+      closeModal();
+    });
+  }
+
+  if (modalOverlay) {
+    modalOverlay.addEventListener("click", (event) => {
+      if (event.target === modalOverlay) {
+        closeModal();
+      }
+    });
+  }
+
+  if (modalForm) {
+    modalForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!currentModalType) {
+        closeModal();
+        return;
+      }
+
+      if (!modalAmountInput || !modalDescInput) {
+        closeModal();
+        return;
+      }
+
+      const rawAmount = modalAmountInput.value.replace(",", ".").trim();
+      const amount = parseFloat(rawAmount);
+      const description = modalDescInput.value.trim();
+
+      if (!amount || amount <= 0 || !description) {
+        showToast("Informe um valor e descrição válidos");
+        return;
+      }
+
+      if (amount > CURRENT_USER_BALANCE) {
+        showToast("Saldo insuficiente para esta operação");
+        return;
+      }
+
+      const date = formatTodayDateBR();
+      let txDescription = description;
+
+      if (currentModalType === "transfer") {
+        txDescription = "Transferência para " + description;
+      } else if (currentModalType === "pay") {
+        txDescription = "Pagamento de " + description;
+      }
+
+      const newTransaction = {
+        date: date,
+        description: txDescription,
+        type: "debit",
+        amount: amount
+      };
+
+      CURRENT_USER_BALANCE = CURRENT_USER_BALANCE - amount;
+      CURRENT_TRANSACTIONS.unshift(newTransaction);
+
+      renderDashboard();
+
+      if (currentModalType === "transfer") {
+        showToast("Transferência registrada na simulação");
+      } else if (currentModalType === "pay") {
+        showToast("Pagamento registrado na simulação");
+      } else {
+        showToast("Operação registrada na simulação");
+      }
+
+      closeModal();
+    });
+  }
+
+  if (hasCurrentUser()) {
+    showScreen("dashboard-screen");
+    CURRENT_USER_BALANCE = FAKE_USER.balance;
+    CURRENT_TRANSACTIONS = FAKE_TRANSACTIONS.slice();
+    renderDashboard();
+  } else {
+    showScreen("login-screen");
+  }
+});
