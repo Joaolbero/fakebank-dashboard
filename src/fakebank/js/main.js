@@ -28,6 +28,15 @@ function clearCurrentUser() {
   } catch (e) {}
 }
 
+function hasCurrentUser() {
+  try {
+    const stored = localStorage.getItem("fakebank_current_user");
+    return !!stored;
+  } catch (e) {
+    return false;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login-form");
   const registerForm = document.getElementById("register-form");
@@ -178,5 +187,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  showScreen("login-screen");
+  if (hasCurrentUser()) {
+    showScreen("dashboard-screen");
+    renderDashboard();
+  } else {
+    showScreen("login-screen");
+  }
 });
